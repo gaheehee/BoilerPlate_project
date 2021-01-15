@@ -4,6 +4,8 @@ const express = require('express')  // express module을 가져옴
 const app = express()
 const port = 5000
 
+const  config = require('./config/key');
+
 const bodyParser = require('body-parser');
 const{ User } = require("./models/User");
 
@@ -13,20 +15,21 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 const mongoose = require('mongoose')
-mongoose.connect('mongodb+srv://dbgahee:loh5558@cluster0.oecku.mongodb.net/dbgahee?retryWrites=true&w=majority', {
+mongoose.connect(config.mongoURI, {
     useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false
 }).then(() => console.log('MongoDB Connected...'))
   .catch(err => console.log(err))
 
 app.get('/', (req, res) => {    
-  res.send('Hello World! 하이루')
+  res.send('Hello World! what a nice day:)')
 })  // /디렉토리(루트 디렉토리)에서 헬로 월드 실행
 
-//회원가입을 위한 router
+// 회원가입을 위한 router
 app.post('/register',(req,res) => {
-    //회원갑입 할 때 필요한 정보들을 client에서 가져오면 그것들을 데이터 베이스에 넣어줌
+    // 회원갑입 할 때 필요한 정보들을 client에서 가져오면 그것들을 데이터 베이스에 넣어줌
     const user = new User(req.body)
 
+    // 정보들이 user에 저장됨
     user.save((err, userInfo) => {
         if(err) return res.json({ succecc: false, err})
         return res.status(200).json({
