@@ -24,11 +24,10 @@ app.get('/', (req, res) => {
   res.send('Hello World! what a nice day:)')
 })  // /디렉토리(루트 디렉토리)에서 헬로 월드 실행
 
-// 회원가입을 위한 router
+// 회원가입을 위한  register router
 app.post('/register',(req,res) => {
     // 회원갑입 할 때 필요한 정보들을 client에서 가져오면 그것들을 데이터 베이스에 넣어줌
     const user = new User(req.body)
-
     // 정보들이 user에 저장됨
     user.save((err, userInfo) => {
         if(err) return res.json({ succecc: false, err})
