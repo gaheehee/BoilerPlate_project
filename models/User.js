@@ -56,6 +56,14 @@ userSchema.pre('save', function(next){
     }
 })
 
+// plain비번이랑 암호화 비번이랑 같은지 확인
+userSchema.method.comparePassword =  function(planePassword, cb){
+    bcrypt.compare(plainPassword, this.password, function(err, isMatch){
+        if(err) return cb(err),
+        cb(null, isMatch)
+    })
+}
+
 const User = mongoose.model('User', userSchema)
 
 module.exports = {User}     // 다른 곳에서도 쓸 수 있게 export해줌
