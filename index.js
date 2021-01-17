@@ -8,6 +8,7 @@ const  config = require('./config/key');
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const{ auth } = require('./middleware/ auth');
 const{ User } = require("./models/User");
 
 //application/x-www-form-urlencoded처럼 생긴 데이터를 분석해서 가져올 수 있게 함
@@ -27,7 +28,7 @@ app.get('/', (req, res) => {
 })  // /디렉토리(루트 디렉토리)에서 헬로 월드 실행
 
 // 회원가입을 위한  register router
-app.post('/register',(req,res) => {
+app.post('/api/users/register',(req,res) => {
     // 회원갑입 할 때 필요한 정보들을 client에서 가져오면 그것들을 데이터 베이스에 넣어줌
     const user = new User(req.body)
     // 정보들이 user에 저장됨
@@ -64,10 +65,29 @@ app.post('/api/users/login', (req, res) => {
 
       })
     })
+  })
+})
 
+// Auth router
+// 여기까지 왔다는 것은 미들웨어 통과했다는 것임 -> Authentication이 true라는 뜻임
+app.get('/api/users/auth', auth , (req,res) => {
+
+  // 이렇게 정보를 주면 어떤 페이지든지 유저 정보를 사용할 수 있어서 편해짐
+  res.status(200).json({
+    _id: req.user._id,
+    // role 0 -> 일반 user, role 0이 아니면 -> 관리자
+    isAdmin: req.user.role === 0 ? false : true,
+    isAuth: true,
+    email: req.user.email,
+    name: req.user.name,
+    lastname: req.user.lastname,
+    role: req.user.role,
+    image: req.user.image
   })
 
 })
+
+
 
 // ctrl + c -> 작업 종료, 서버 종료  
 
