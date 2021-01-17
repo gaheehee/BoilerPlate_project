@@ -8,7 +8,7 @@ const  config = require('./config/key');
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const{ auth } = require('./middleware/ auth');
+const{ auth } = require('./middleware/auth');
 const{ User } = require("./models/User");
 
 //application/x-www-form-urlencoded처럼 생긴 데이터를 분석해서 가져올 수 있게 함
@@ -70,7 +70,7 @@ app.post('/api/users/login', (req, res) => {
 
 // Auth router
 // 여기까지 왔다는 것은 미들웨어 통과했다는 것임 -> Authentication이 true라는 뜻임
-app.get('/api/users/auth', auth , (req,res) => {
+app.get('/api/users/auth', auth , (req, res) => {
 
   // 이렇게 정보를 주면 어떤 페이지든지 유저 정보를 사용할 수 있어서 편해짐
   res.status(200).json({
@@ -87,7 +87,16 @@ app.get('/api/users/auth', auth , (req,res) => {
 
 })
 
-
+app.get('/api/users/logout', auth, (req, res) => {
+  User.findOneAndUpdate({ _id: req.user._id }, 
+   { token: ""}
+   , (err, user) => {
+     if(err) return res.json({ success: false, err });
+     return res.status(200).send({
+       success: true
+     })
+   })
+})
 
 // ctrl + c -> 작업 종료, 서버 종료  
 

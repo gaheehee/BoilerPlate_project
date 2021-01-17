@@ -80,7 +80,7 @@ userSchema. methods.generateToken = function(cb){
     })
 }
 
-userSchema.statics.findByTOken = function( token, cb){
+userSchema.statics.findByToken = function( token, cb){
     var user = this;
 
     // 토큰을 decode(복호화)함
