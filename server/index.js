@@ -3,7 +3,6 @@
 const express = require('express')  // express module을 가져옴
 const app = express()
 const port = 5000
-
 const  config = require('./config/key');
 
 const cookieParser = require('cookie-parser');
@@ -26,6 +25,10 @@ mongoose.connect(config.mongoURI, {
 app.get('/', (req, res) => {    
   res.send('Hello World! what a nice day:)')
 })  // /디렉토리(루트 디렉토리)에서 헬로 월드 실행
+
+app.get('/api/hello', (req,res) => {
+  res.send("안녕하세요~")
+})
 
 // 회원가입을 위한  register router
 app.post('/api/users/register',(req,res) => {
