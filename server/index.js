@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
 })  // /디렉토리(루트 디렉토리)에서 헬로 월드 실행
 
 app.get('/api/hello', (req,res) => {
-  res.send("안녕하세요~")
+  res.send("hello world~")
 })
 
 // 회원가입을 위한  register router
