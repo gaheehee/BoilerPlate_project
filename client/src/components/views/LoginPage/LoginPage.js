@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import Axios from 'axios'
-import { useDispatch } from 'react-redux';
+import { provider, useDispatch } from 'react-redux';
 import { loginUser } from '../../../_actions/user_action';
-
-function LoginPage() {
-    const dispatch = useDispatch();
+import { withRouter } from 'react-router-dom';
+function LoginPage(props) {
+    const dispatch = useDispatch()
 
     const [Email, setEmail] = useState("")
     const [Password, setPassword] = useState("")
@@ -18,10 +18,7 @@ function LoginPage() {
     }
 
     const onSubmitHandler = (event) => {
-        event.preventDefault(); // 페이지 리프레쉬 막기
-        
-        console.log('Email', Email)
-        console.log('Password', Password)
+        event.preventDefault();
 
         let body = {
             email: Email,
@@ -29,29 +26,37 @@ function LoginPage() {
         }
 
         dispatch(loginUser(body))
+            .then(response => {
+                if (response.payload.loginSuccess) {
+                    props.history.push('/')
+                } else {
+                    alert('Error˝')
+                }
+            })
+
 
     }
 
+
     return (
-        <div style = { {display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100vh'}}>
-
-            <form  style = {{ display: 'flex', flexDirection: 'column'}}
-                onSubmit = { onSubmitHandler }
+        <div style={{
+            display: 'flex', justifyContent: 'center', alignItems: 'center'
+            , width: '100%', height: '100vh'
+        }}>
+            <form style={{ display: 'flex', flexDirection: 'column' }}
+                onSubmit={onSubmitHandler}
             >
-
                 <label>Email</label>
-                <input type = "email" value = {Email} onChange = {onEmailHandler} />
+                <input type="email" value={Email} onChange={onEmailHandler} />
                 <label>Password</label>
-                <input type = "password" value = {Password} onChange = {onPasswordHandler} />
+                <input type="password" value={Password} onChange={onPasswordHandler} />
                 <br />
-                <button type = "sumit">
+                <button type="submit">
                     Login
                 </button>
-
             </form>
-
         </div>
     )
 }
 
-export default LoginPage
+export default withRouter(LoginPage)

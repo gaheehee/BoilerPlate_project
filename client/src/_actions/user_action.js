@@ -1,13 +1,14 @@
 import axios from 'axios';
-import {LOGIN_USER} from './types';
+import {
+    LOGIN_USER,
+} from './types';
+export function loginUser(dataToSubmit) {
 
-export function loginUser(dataTosubmit){
-
-    const request = axios.post('/api/user/login', dataTosubmit)
+    const request = axios.post('/api/users/login', dataToSubmit)
         .then(response => response.data)
 
     return {
-        type: LOGIN_USER, 
+        type: LOGIN_USER,
         payload: request
     }
 }
